@@ -2,19 +2,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.regex.Pattern;
 
 public class NoiseRemover {
     HashMap<String,Integer> signalSpaceNoiseOccurrencesMap;
     String CleanEncodedMessage = "";
     String encodedMessage;
 
+
     public NoiseRemover(String encoded){
         this.encodedMessage = encoded;
         this.CleanEncodedMessage = "";
-        this. signalSpaceNoiseOccurrencesMap = new HashMap<>();
+        this.signalSpaceNoiseOccurrencesMap = new HashMap<>();
     }
 
-    public void removeNoise() {
+    public String removeNoise() {
+        isValid();
         String clean = this.encodedMessage;
         if (hasNoise()) {
             for (String letter :identifyNoiseLetters()){
@@ -22,8 +25,15 @@ public class NoiseRemover {
             }
         }
         this.CleanEncodedMessage = clean;
+        return clean;
     }
 
+    //checks validity of encoded message
+    public void isValid() {
+        if (Pattern.matches(".*[^a-zA-Z1-9].*", encodedMessage)) {
+            throw new IllegalArgumentException();
+        }
+    }
         //populates field map with the raw letters and number of occurrences
         public void getEncodedOccurrences (){
             HashMap<String, Integer> encodedMap = new HashMap<>();
