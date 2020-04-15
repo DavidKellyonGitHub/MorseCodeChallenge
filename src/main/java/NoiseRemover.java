@@ -30,7 +30,7 @@ public class NoiseRemover {
 
     //checks validity of encoded message
     public void isValid() {
-        if (Pattern.matches(".*[^a-zA-Z1-9].*", encodedMessage)) {
+        if (Pattern.matches(".*[^a-zA-Z0-9].*", encodedMessage)) {
             throw new IllegalArgumentException();
         }
     }

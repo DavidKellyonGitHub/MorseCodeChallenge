@@ -10,6 +10,6 @@ public class Decoder {
     public static String decode(String encoded) {
         NoiseRemover noiseRemover = new NoiseRemover(encoded);
         Translator translator = new Translator(noiseRemover.removeNoise());
-        return null;
+        return translator.decode();
     }
 }

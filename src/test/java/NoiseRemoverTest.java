@@ -81,36 +81,4 @@ public class NoiseRemoverTest {
         HashSet<String> actual = remover.identifyNoiseLetters();
         assertEquals(expected, actual);
     }
-
-    @Test
-    public void getSignalSpaceNoiseOccurrencesMap() {
-    }
-
-    @Test
-    public void setSignalSpaceNoiseOccurrencesMap() {
-    }
-
-    @Test
-    public void isHasNoise() {
-    }
-
-    @Test
-    public void setHasNoise() {
-    }
-
-    @Test
-    public void getCleanEncodedMessage() {
-    }
-
-    @Test
-    public void setCleanEncodedMessage() {
-    }
-
-    @Test
-    public void getEncodedMessage() {
-    }
-
-    @Test
-    public void setEncodedMessage() {
-    }
 }

@@ -6,24 +6,23 @@ import java.util.regex.Pattern;
 public class Translator {
     ArrayList<String> encodedWords;
     String cleanEncodedMessage;
-    HashMap<String, String> cypherMap;
     String[] signalSilence;
     String decodedMessage;
+    Cypher cypher;
 
-    public Translator(String CleanEncodedMessage, HashMap<String, String> cypherMap) {
+    public Translator(String CleanEncodedMessage) {
         this.cleanEncodedMessage = CleanEncodedMessage;
         this.encodedWords = new ArrayList<>();
-        this.cypherMap = cypherMap;
         this.signalSilence = new String[2];
         this.decodedMessage = "";
+        this.cypher = new Cypher();
     }
 
     //group signal and silence characters
-    public String[] groupSignalAndSilence() {
+    public void groupSignalAndSilence() {
         Set<String> letterSet = new HashSet<String>(Arrays.asList(cleanEncodedMessage.split("")));
         String[] letters = new String[2];
         signalSilence =letterSet.toArray(letters);
-        return signalSilence;
     }
 
     //swaps signal and silence
@@ -32,14 +31,37 @@ public class Translator {
     }
 
     //decode message
-    public String decode(){
+    public String decode() {
+        Integer[] matches = countMatches();
+        StringBuilder decoded = new StringBuilder();
+        if (matches[1] > matches[0]) {
+            for (String pattern : cypher.getRegExLetterMap().keySet()) {
+                Pattern morsePattern = Pattern.compile(pattern);
+                Matcher matcher = morsePattern.matcher(cleanEncodedMessage);
+                while (matcher.find()){
+                    decoded.append(cypher.getRegExLetterMap().get(pattern));
+                }
+            }
+        } else {
+            swapSignalAndSilence();
+            cypher.populateRegExMLetterMap(defineDitDahSpace());
+            for (String pattern : cypher.getRegExLetterMap().keySet()) {
+                Pattern morsePattern = Pattern.compile(pattern);
+                Matcher matcher = morsePattern.matcher(cleanEncodedMessage);
+                while (matcher.find()){
+                    decoded.append(cypher.getRegExLetterMap().get(pattern));
+                }
+            }
+        }
+        System.out.println(decoded);
+        this.decodedMessage = decoded.toString();
+            return decodedMessage;
+        }
 
-        return null;
-    }
 
-    //count pattern matches for first letter in set
+    //count pattern for signal/silence and swapped signal/silence
     public Integer[] countMatches() {
-        Cypher cypher = new Cypher();
+        groupSignalAndSilence();
         cypher.populateRegExMLetterMap(defineDitDahSpace());
         Integer preSwapMatches = 0;
         Integer postSwapMatches = 0;
