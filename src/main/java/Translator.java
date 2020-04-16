@@ -34,8 +34,11 @@ public class Translator {
     public String decode() {
         Integer[] matches = countMatches();
         StringBuilder decoded = new StringBuilder();
+        swapSignalAndSilence();
+        cypher.populateRegExMLetterMap(defineDitDahSpace());
         if (matches[1] > matches[0]) {
             for (String pattern : cypher.getRegExLetterMap().keySet()) {
+                System.out.println(pattern);
                 Pattern morsePattern = Pattern.compile(pattern);
                 Matcher matcher = morsePattern.matcher(cleanEncodedMessage);
                 while (matcher.find()){
@@ -43,9 +46,10 @@ public class Translator {
                 }
             }
         } else {
-            swapSignalAndSilence();
+
             cypher.populateRegExMLetterMap(defineDitDahSpace());
             for (String pattern : cypher.getRegExLetterMap().keySet()) {
+                System.out.println(pattern);
                 Pattern morsePattern = Pattern.compile(pattern);
                 Matcher matcher = morsePattern.matcher(cleanEncodedMessage);
                 while (matcher.find()){
